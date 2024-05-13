@@ -31,7 +31,8 @@ if (app.Environment.IsDevelopment())
     
 }
 
-
+app.UseCors("CorsPolicy");
+app.UseAuthorization();
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
