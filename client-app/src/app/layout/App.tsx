@@ -5,6 +5,7 @@ import {  Container } from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import {v4 as uuid} from 'uuid';
 
 
 function App() {  
@@ -15,7 +16,8 @@ const [editMode, setEditMode] = useState(false);
 useEffect(() => {
     axios.get<Activity[]>('http://localhost:5000/api/activities')
      .then(response => {
-      console.log(response) ;
+      console.log(response);
+      console.log(uuid());
       setActivities(response.data)
      })
   }, [])
@@ -24,11 +26,11 @@ useEffect(() => {
     setSelectedActivity(activities.find(x => x.id ===id))
   }
    
-  function handleCreateOrEditActivity(activity: Activity)
+  function handleCreateOrEditActivity(activity: Activity )
   {
-      activity ? 
+      activity.id ? 
             setActivities([...activities.filter(x=> x.id !==activity.id), activity])
-      :     setActivities([...activities, activity]);
+      :     setActivities([...activities, {...activity, id:uuid()}]);
       setEditMode(false);
       setSelectedActivity(activity)
   }

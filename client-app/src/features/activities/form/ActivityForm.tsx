@@ -2,9 +2,9 @@ import { Button, Form, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import { ChangeEvent, useState } from "react";
 
-interface Props{ 
-   activity : Activity | undefined; 
+interface Props{    
    closeForm: () => void;
+   activity : Activity | undefined; 
    createOrEdit: (activity : Activity) => void;
 
 }
