@@ -9,6 +9,9 @@ export default class ActivityStore {
     editMode = false;
     loading = false; 
     loadingInitial = false;
+    title = 'Hello from mobx';
+    //setTitle  
+    
 
      constructor() {
          makeAutoObservable(this )
@@ -33,6 +36,10 @@ export default class ActivityStore {
            
         }       
 
+     }
+
+     setTitle =  () =>{
+            this.title = this.title + '!';
      }
       
      
