@@ -1,6 +1,7 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable , runInAction} from "mobx";
 import { Activity } from "../models/activity";
 import agent from "../api/agent";
+import {v4 as uuid} from 'uuid';
 
 export default class ActivityStore {
     
@@ -11,25 +12,27 @@ export default class ActivityStore {
     loadingInitial = false;  
     
     constructor() {
-         makeAutoObservable(this )
+         makeAutoObservable(this)
      }
 
      loadActivities = async () => {
        this.setLoadingInitial(true);
         try {
-             const activities = await agent.Activities.list();
-              
-                 activities.forEach(activity =>{
-                    activity.date = activity.date.split('T')[0];
-                    this.activities.push(activity);              
-                 }) 
-                 this.setLoadingInitial(false);             
+             const activities =  await agent.Activities.list();              
+             
+             this.activities = [];  // I have to add this as it seems to create 
+                                    // duplicate values on load which is visible on chrome developer tool,
+                                    // but it shows only the duplicate records upon click on "create activity" 
+
+             activities.forEach(activity =>{
+                     activity.date = activity.date.split('T')[0];
+                     this.activities.push(activity);              
+                  }) 
+             this.setLoadingInitial(false);             
         }
         catch (error){
             console.log(error);
-            this.setLoadingInitial(false);         
-           
-            
+            this.setLoadingInitial(false);        
         }      
     }
      
@@ -52,10 +55,53 @@ export default class ActivityStore {
        this.editMode= true;
     }
 
-    closeForm = () => {
+    closeForm = () => {        
         this.editMode = false; 
     }
+
+    createActivity = async(activity:Activity) => {
+        this.loading = true;
+        activity.id = uuid();
+        try{
+            await agent.Activities.create(activity);
+            runInAction(() => {
+                this.activities.push(activity);
+                this.selectedActivity = activity;
+                this.editMode = false;
+                this.loading=false;
+            })
+        }catch(error) {
+             console.log(error)
+             runInAction(()=> {
+                 this.loading =false;
+             })
+        }
+    }
+
+    updateActivity = async(activity: Activity) =>{
+       this.loading = true;
+       try {
+             await agent.Activities.update(activity);
+             runInAction(() => {
+                this.activities = [ ...this.activities.filter(x=> x.id !== activity.id), activity]
+                this.selectedActivity = activity;
+                this.editMode = false;
+                this.loading = false; 
+             })
+       } catch(error) {
+         console.log(error);
+         runInAction(() => {
+            this.loading = false; 
+         })
+       }
+    }
+
+    
      
 }
+
+
+
+
 
 
