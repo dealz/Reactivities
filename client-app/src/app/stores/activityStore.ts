@@ -8,12 +8,9 @@ export default class ActivityStore {
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
     loading = false; 
-    loadingInitial = false;
-    title = 'Hello from mobx';
-    //setTitle  
+    loadingInitial = false;  
     
-
-     constructor() {
+    constructor() {
          makeAutoObservable(this )
      }
 
@@ -21,26 +18,21 @@ export default class ActivityStore {
        this.setLoadingInitial(true);
         try {
              const activities = await agent.Activities.list();
-           
-                activities.forEach(activity =>{
+              
+                 activities.forEach(activity =>{
                     activity.date = activity.date.split('T')[0];
-                    this.activities.push(activity);
-                }) 
-               
-                this.setLoadingInitial(false);                       
-            
+                    this.activities.push(activity);              
+                 }) 
+                 this.setLoadingInitial(false);             
         }
         catch (error){
             console.log(error);
-            this.setLoadingInitial(false);          
+            this.setLoadingInitial(false);         
            
-        }       
-
-     }
-
-     setTitle =  () =>{
-            this.title = this.title + '!';
-     }
+            
+        }      
+    }
+     
       
      
      setLoadingInitial = (state: boolean) => {
@@ -65,3 +57,5 @@ export default class ActivityStore {
     }
      
 }
+
+
