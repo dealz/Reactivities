@@ -3,9 +3,8 @@ import { Activity } from "../models/activity";
 import agent from "../api/agent";
 import {v4 as uuid} from 'uuid';
 
-export default class ActivityStore {
+export default class ActivityStore {    
     
-    //activities: Activity[] = [];
     activityRegistry = new Map<string, Activity>();
 
     selectedActivity: Activity | undefined = undefined;
