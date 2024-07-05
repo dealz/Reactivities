@@ -4,7 +4,8 @@ export interface IProfile  {
   userName: string;
   displayName: string;
   bio?:  string;
-  image?: string;  
+  image?: string;
+  photos? : Photo[];  
 }
 
 export class Profile implements IProfile {
@@ -19,4 +20,12 @@ export class Profile implements IProfile {
      displayName: string;
     bio?:  string;
     image?: string;  
+    photos?: Photo[];
+}
+
+export interface Photo {
+      id: string;
+      url: string;
+      isMain : boolean;
+
 }

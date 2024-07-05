@@ -19,7 +19,7 @@ import MyDateInput from "../../../app/common/form/MyDateInput";
 export default observer(function ActivityForm()
 {
 const {activityStore} = useStore();
-const {createActivity, updateActivity, loading,
+const {createActivity, updateActivity, 
    loadActivity, loadingInitial} = activityStore;
 
    const {id} = useParams();

@@ -21,14 +21,15 @@ export default  observer(function ActivityListItem( {activity} : Props) {
         {activity.isCancelled &&  
              <Label attached='top'  color='red' content='Cancelled' style={{textAlign:'center'}} />
         }
+       
         <Item.Group>
             <Item>
-                <Item.Image style={{marginBottom:4}}   size='tiny' circular src='/assets/user.png'></Item.Image>
+                <Item.Image style={{marginBottom:4}}   size='tiny' circular src={activity.host?.image || '/assets/user.png'}></Item.Image>
                 <Item.Content>
                     <Item.Header as={Link} to={`/activities/${activity.id}`}>
                         {activity.title}                        
                     </Item.Header>
-                    <Item.Description>Hosted by {activity.host?.displayName}</Item.Description>
+                    <Item.Description>Hosted by <Link to={`/profiles/${activity.hostUserName}`} >{activity.host?.displayName}</Link> </Item.Description>
                     {activity.isHost && (
                            <Item.Description>
                                 <Label basic color='orange'>
