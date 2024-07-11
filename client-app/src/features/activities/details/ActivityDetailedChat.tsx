@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import {Segment, Header, Comment, Form, Button} from 'semantic-ui-react'
+import {Segment, Header, Comment,Loader} from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Formik , Form, Field, FieldProps} from 'formik';
+import * as Yup from 'yup';
 
 interface Props {
      activityId : string;
@@ -16,8 +18,7 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
                 commentStore.createHubConnection(activityId);
           }
 
-          return () => {
-            console.log('clear comments') ;
+          return () => {            
             commentStore.clearComments();
           }
     }, [commentStore, activityId])
@@ -33,7 +34,7 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
             >
                 <Header>Chat about this event</Header>
             </Segment>
-            <Segment attached>
+            <Segment attached clearing>
                 <Comment.Group>
                     {commentStore.comments.map(comment =>(
                     <Comment key={comment.id}>
@@ -49,17 +50,45 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
                         </Comment.Content>
                     </Comment>
 
-                    ))}                   
+                    ))}   
 
-                    <Form reply>
-                        <Form.TextArea/>
-                        <Button
-                            content='Add Reply'
-                            labelPosition='left'
-                            icon='edit'
-                            primary
-                        />
-                    </Form>
+                    <Formik
+                         onSubmit={(values, {resetForm}) =>
+                            commentStore.addComment(values).then(() => resetForm())}
+                         initialValues={{body: ''}}
+                         validationSchema={Yup.object({
+                             body: Yup.string().required()   
+                         })}
+                     >
+                           {({isSubmitting, isValid}) => (
+                                <Form className='ui form'>
+                                     <Field name='body'>
+                                          {(props: FieldProps) => (
+                                               <div style={{position: 'relative'}}>
+                                                     <Loader active={isSubmitting} />
+                                                     <textarea>
+                                                          placeholder='Enter your comment'
+                                                          rows={2}
+                                                          {...props.field}  
+                                                          onKeyDown={e => {
+                                                              if (e.key === 'Enter' && e.shiftKey) {
+                                                                 return;
+                                                              }
+                                                              if (e.key === 'Enter' && !e.shiftKey) {
+                                                                  e.preventDefault();
+                                                                  isValid && handleSubmit();
+                                                              }
+                                                          }}
+                                                     </textarea>
+                                                     
+                                               </div>
+                                          )}
+                                     </Field>
+                               </Form>
+                            )}    
+                    </Formik>
+
+                  
                 </Comment.Group>
             </Segment>
         </>
