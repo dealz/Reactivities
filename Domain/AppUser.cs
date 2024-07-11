@@ -17,5 +17,6 @@ namespace Domain
         public ICollection<Photo> Photos { get; set; }
 
 
+
     }
 }
