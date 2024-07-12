@@ -1,10 +1,13 @@
 import { observer } from 'mobx-react-lite'
-import {Segment, Header, Comment,Loader} from 'semantic-ui-react'
+import {Segment, Header, Comment,Loader, Button} from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik , Form, Field, FieldProps} from 'formik';
 import * as Yup from 'yup';
+import MyTextArea from '../../../app/common/form/MyTextArea';
+import { formatDistanceToNow, formatRelative } from 'date-fns';
+import { enIN, enUS, it } from 'date-fns/locale';
 
 interface Props {
      activityId : string;
@@ -35,24 +38,7 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
                 <Header>Chat about this event</Header>
             </Segment>
             <Segment attached clearing>
-                <Comment.Group>
-                    {commentStore.comments.map(comment =>(
-                    <Comment key={comment.id}>
-                        <Comment.Avatar src={comment.image || '/assets/user.png'}  />
-                        <Comment.Content>
-                            <Comment.Author as={Link} to={`/profiles/${comment.username}`}>
-                                 {comment.displayName}
-                            </Comment.Author>
-                            <Comment.Metadata>
-                                <div>{comment.createdAt.toString()}</div>
-                            </Comment.Metadata>
-                            <Comment.Text>{comment.body}</Comment.Text>                            
-                        </Comment.Content>
-                    </Comment>
-
-                    ))}   
-
-                    <Formik
+            <Formik
                          onSubmit={(values, {resetForm}) =>
                             commentStore.addComment(values).then(() => resetForm())}
                          initialValues={{body: ''}}
@@ -60,14 +46,14 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
                              body: Yup.string().required()   
                          })}
                      >
-                           {({isSubmitting, isValid}) => (
+                           {({isSubmitting, isValid, handleSubmit}) => (
                                 <Form className='ui form'>
                                      <Field name='body'>
-                                          {(props: FieldProps) => (
+                                          {(props : FieldProps) => (
                                                <div style={{position: 'relative'}}>
                                                      <Loader active={isSubmitting} />
-                                                     <textarea>
-                                                          placeholder='Enter your comment'
+                                                     <textarea
+                                                          placeholder='Enter your comment (Enter to submit , SHIFT + enter for new line)'
                                                           rows={2}
                                                           {...props.field}  
                                                           onKeyDown={e => {
@@ -79,16 +65,31 @@ export default observer(function ActivityDetailedChat( {activityId} : Props) {
                                                                   isValid && handleSubmit();
                                                               }
                                                           }}
-                                                     </textarea>
+                                                     />
                                                      
                                                </div>
                                           )}
-                                     </Field>
-                               </Form>
+                                     </Field>                                   
+                                </Form>
                             )}    
-                    </Formik>
+                    </Formik>  
+                <Comment.Group>
+                    {commentStore.comments.map(comment =>(
+                    <Comment key={comment.id}>
+                        <Comment.Avatar src={comment.image || '/assets/user.png'}  />
+                        <Comment.Content>
+                            <Comment.Author as={Link} to={`/profiles/${comment.username}`}>
+                                 {comment.displayName}
+                            </Comment.Author>
+                            <Comment.Metadata>
+                                <div>{formatRelative(comment.createdAt,new Date())}</div>
+                            </Comment.Metadata>
+                            <Comment.Text style={{whiteSpace: 'pre-wrap'}}>{comment.body}</Comment.Text>                            
+                        </Comment.Content>
+                    </Comment>
 
-                  
+                    ))}  
+                                    
                 </Comment.Group>
             </Segment>
         </>

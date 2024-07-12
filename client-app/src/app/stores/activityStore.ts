@@ -208,6 +208,14 @@ export default class ActivityStore {
          }
     }
 
+    clearSelectedActivity = () => {
+        console.log('before selected activity: ' +  this.selectedActivity)
+        this.selectedActivity = undefined;
+        console.log('after selected activity: ' +  this.selectedActivity)
+
+        
+    }
+
     
      
 }
