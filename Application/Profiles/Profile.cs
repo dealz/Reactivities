@@ -13,6 +13,13 @@ namespace Application.Profiles
 
         public ICollection<Photo> Photos { get; set; }
 
+        public bool Following {get; set;}
+
+        public int FollowersCount {get;set;}
+
+        public int FollowingCount {get;set;}
+    
+
 
 
     }
