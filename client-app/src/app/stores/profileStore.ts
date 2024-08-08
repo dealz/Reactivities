@@ -195,16 +195,10 @@ export default class ProfileStore{
 
             loadUserActivities = async (username: string, predicate? :string) => {
                 this.loadingActivities = true;               
-                try {               
-                  
-                  //const activities = await agent.Profiles.listActivities(username, predicate!) ;                  
-                  console.log('inside loadUserActivities');
-                  //const activities = await agent.Profiles.listActivities('bob', 'hosting') ;
-                  const bobactivities = await agent.Profiles.listBobActivities();
-                 // console.log('activities title:' + bobactivities[0].title);
-                  runInAction(() => {
-                     // this.userActivities = activities as unknown as UserActivity[];                      
-                     this.userActivities = bobactivities;                    
+                try {              
+                const userActivities = await agent.Profiles.listActivities(username,predicate);                 
+                  runInAction(() => {                                          
+                     this.userActivities = userActivities;                    
                       this.loadingActivities = false;
                    })
 

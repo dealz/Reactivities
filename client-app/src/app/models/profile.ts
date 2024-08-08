@@ -38,25 +38,13 @@ export interface Photo {
 
 }
 
-export interface IUserActivity {
+export interface UserActivity {
   id: string;
   title: string;
   category: string;
   date: Date;
  }
 
- export class UserActivity implements IUserActivity {
-  constructor(activity: Activity)
-  {
-      this.title = activity.title;
-      
-  }
 
-  id: string;
-  title: string;
-  category: string;
-  date: Date;
-  
-}
 
  
