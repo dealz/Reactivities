@@ -12,7 +12,7 @@ export default class ProfileStore{
          followings: Profile[] = []; 
          loadingFollowings : boolean;
          activeTab = 0;
-         userActivities : UserActivity[] =[];
+         userActivities: UserActivity[] = [];
          loadingActivities = false;
 
 
@@ -193,11 +193,14 @@ export default class ProfileStore{
             }
 
             loadUserActivities = async (username: string, predicate? :string) => {
-                this.loadingActivities = true;
-                try {
-                   const useractivities = await agent.Profiles.listActivities(username, predicate);
-                   runInAction(() => {
-                      this.userActivities = useractivities;
+                this.loadingActivities = true;               
+                try {               
+                  
+                  const activities = await agent.Profiles.listActivities(username, predicate!) ;                  
+                 
+                  runInAction(() => {
+                     // this.userActivities = activities as unknown as UserActivity[];                      
+                     this.userActivities = activities ;                      
                       this.loadingActivities = false;
                    })
 

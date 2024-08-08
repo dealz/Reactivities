@@ -43,3 +43,5 @@ export interface UserActivity {
   category: string;
   date: Date;
  }
+
+ 

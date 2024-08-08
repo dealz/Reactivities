@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Profiles;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -20,6 +21,7 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(command));
         }
+
 
         [HttpGet("{username}/activities")]
         public async Task<IActionResult> GetActivities(string username, string predicate)
