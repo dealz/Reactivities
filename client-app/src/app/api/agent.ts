@@ -116,10 +116,13 @@ const Profiles = {
       listFollowings : (username: string, predicate: string) => 
         requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
       listActivities : (username: string, predicate: string) => {     
-        const queryStr = `/profiles/${username}/activities?predicate=${predicate}`;
+       //const queryStr = `/profiles/${username}/activities?predicate=${predicate}`;
+        const queryStr = '/profiles/getBobActivities';        
         console.log('query string:' + queryStr);
         requests.get<UserActivity[]>(queryStr);
-      }
+      },    
+    listBobActivities : () => 
+          requests.get<UserActivity[]>(`/profiles/getBobActivities`)
     
 } 
 

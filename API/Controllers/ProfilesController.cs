@@ -29,6 +29,12 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new ListActivities.Query { Username = username, Predicate = predicate }));
         }
 
+        [HttpGet("getBobActivities")]
+        public async Task<IActionResult> GetBobActivities()
+        {
+            return HandleResult(await Mediator.Send(new ListActivities.Query { Username = "bob", Predicate = "hosting" }));
+        }
+
 
     }
 }

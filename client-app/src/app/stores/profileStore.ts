@@ -27,6 +27,7 @@ export default class ProfileStore{
                       }
                       else {
                           this.followings = [];
+                          this.userActivities=[];
                       }
                   }
                )
@@ -196,11 +197,14 @@ export default class ProfileStore{
                 this.loadingActivities = true;               
                 try {               
                   
-                  const activities = await agent.Profiles.listActivities(username, predicate!) ;                  
-                 
+                  //const activities = await agent.Profiles.listActivities(username, predicate!) ;                  
+                  console.log('inside loadUserActivities');
+                  //const activities = await agent.Profiles.listActivities('bob', 'hosting') ;
+                  const bobactivities = await agent.Profiles.listBobActivities();
+                 // console.log('activities title:' + bobactivities[0].title);
                   runInAction(() => {
                      // this.userActivities = activities as unknown as UserActivity[];                      
-                     this.userActivities = activities ;                      
+                     this.userActivities = bobactivities;                    
                       this.loadingActivities = false;
                    })
 

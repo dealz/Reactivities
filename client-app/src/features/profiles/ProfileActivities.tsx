@@ -48,7 +48,7 @@ const panes = [
         <br />
         <Card.Group itemsPerRow={4}>                         
        
-        {/* {userActivities.map((activity: UserActivity) => (               
+        {userActivities.map((activity: UserActivity) => (               
         <Card
               as={Link}
               to={`/activities/${activity.id}`}
@@ -70,7 +70,7 @@ const panes = [
         </Card.Content>
         </Card>
             
-        ))} */}
+        ))}
        
        
         </Card.Group>

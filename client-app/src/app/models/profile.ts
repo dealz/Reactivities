@@ -1,3 +1,4 @@
+import { Activity } from "./activity";
 import { User } from "./user";
 
 export interface IProfile  {
@@ -37,11 +38,25 @@ export interface Photo {
 
 }
 
-export interface UserActivity {
+export interface IUserActivity {
   id: string;
   title: string;
   category: string;
   date: Date;
  }
+
+ export class UserActivity implements IUserActivity {
+  constructor(activity: Activity)
+  {
+      this.title = activity.title;
+      
+  }
+
+  id: string;
+  title: string;
+  category: string;
+  date: Date;
+  
+}
 
  
