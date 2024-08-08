@@ -1,4 +1,4 @@
-import { Activity } from "./activity";
+
 import { User } from "./user";
 
 export interface IProfile  {
